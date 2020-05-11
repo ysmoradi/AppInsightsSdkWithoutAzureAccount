@@ -1,0 +1,27 @@
+{
+  "inputs": [
+    {
+      "type": "ApplicationInsights"
+    },
+    {
+      "type": "PerformanceCounter",
+      "sampleIntervalMsec": "5000",
+      "counters": [
+        {
+          "counterCategory": "Process",
+          "counterName": "Private Bytes"
+        },
+        {
+          "counterCategory": ".NET CLR Exceptions",
+          "counterName": "# of Exceps Thrown / sec"
+        }
+      ]
+    }
+  ],
+  "outputs": [
+    {
+      "type": "StdOutput" // console output
+    }
+  ],
+  "schemaVersion": "2016-08-11"
+}
