@@ -2,25 +2,27 @@
   "inputs": [
     {
       "type": "ApplicationInsights"
-    },
-    {
-      "type": "PerformanceCounter",
-      "sampleIntervalMsec": "5000",
-      "counters": [
-        {
-          "counterCategory": "Process",
-          "counterName": "Private Bytes"
-        },
-        {
-          "counterCategory": ".NET CLR Exceptions",
-          "counterName": "# of Exceps Thrown / sec"
-        }
-      ]
     }
   ],
   "outputs": [
     {
-      "type": "StdOutput" // console output
+      "type": "StdOutput", // console output
+      "filters": [
+        {
+          "type": "drop",
+          "include": "Target == 192.168.62.1:30009"
+        }
+      ]
+    },
+    {
+      "type": "ElasticSearch",
+      "serviceUri": "http://192.168.62.1:30009",
+      "filters": [
+        {
+          "type": "drop",
+          "include": "Target == 192.168.62.1:30009"
+        }
+      ]
     }
   ],
   "schemaVersion": "2016-08-11"
