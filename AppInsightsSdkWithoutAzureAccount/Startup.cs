@@ -1,4 +1,6 @@
 using Microsoft.ApplicationInsights;
+using Microsoft.ApplicationInsights.DataContracts;
+using Microsoft.ApplicationInsights.Extensibility;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -6,8 +8,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace AppInsightsSdkWithoutAzureAccount
 {
@@ -39,6 +43,30 @@ namespace AppInsightsSdkWithoutAzureAccount
                 endpoints.MapGet("/", async context =>
                 {
                     TelemetryClient telemetryClient = context.RequestServices.GetRequiredService<TelemetryClient>(); // You can inject TelemetryClient in controllers and services to provide additional data to app insights sdk.
+
+                    using (IOperationHolder<DependencyTelemetry> exportExcelOperation = telemetryClient.StartOperation<DependencyTelemetry>("ExportToExcel"))
+                    {
+                        exportExcelOperation.Telemetry.Type = "Background";
+
+                        try
+                        {
+                            await Task.Delay(1000);
+                            telemetryClient.TrackTrace($"done {30}%");
+                            await Task.Delay(1000);
+                            telemetryClient.TrackTrace($"done {60}%");
+                            await Task.Delay(1000);
+                            telemetryClient.TrackTrace($"done {100}%");
+                        }
+                        catch (Exception exp)
+                        {
+                            telemetryClient.TrackException(exp);
+                            throw;
+                        }
+                        finally
+                        {
+                            telemetryClient.StopOperation(exportExcelOperation);
+                        }
+                    }
 
                     telemetryClient.TrackEvent("MyEvent", new Dictionary<string, string>
                     {
