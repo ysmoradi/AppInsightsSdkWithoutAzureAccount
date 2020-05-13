@@ -24,12 +24,12 @@ namespace AppInsightsSdkWithoutAzureAccount
         public static IHostBuilder CreateHostBuilder(string[] args, DiagnosticPipeline pipeline) =>
             Host.CreateDefaultBuilder(args)
             .ConfigureServices(services => services.AddSingleton<ITelemetryProcessorFactory>(sp => new EventFlowTelemetryProcessorFactory(pipeline)))
-            .ConfigureLogging(logginBuilder =>
+            .ConfigureLogging(loggingBuilder =>
             {
-                logginBuilder.ClearProviders();
-                // app insights will add itself to loggingProviders, when you call services.AddApplicationInsightsTelemetry in Startup.cs
+                loggingBuilder.ClearProviders();
                 // You can clear other providers to reduce pressure.
                 // You can configure eventFlowConfig.json to submit your logs to multiple outputs such as Elastic.
+                loggingBuilder.AddApplicationInsights();
             })
             .ConfigureWebHostDefaults(webBuilder =>
             {
