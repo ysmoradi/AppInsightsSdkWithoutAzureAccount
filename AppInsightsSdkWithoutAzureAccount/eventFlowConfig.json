@@ -4,25 +4,19 @@
       "type": "ApplicationInsights"
     }
   ],
+  "filters": [
+    {
+      "type": "drop",
+      "include": "Target == 192.168.62.1:30009" // to prevent logging http calls to elastic!
+    }
+  ],
   "outputs": [
     {
-      "type": "StdOutput", // console output
-      "filters": [
-        {
-          "type": "drop",
-          "include": "Target == 192.168.62.1:30009"
-        }
-      ]
+      "type": "StdOutput" // console output
     },
     {
       "type": "ElasticSearch",
-      "serviceUri": "http://192.168.62.1:30009",
-      "filters": [
-        {
-          "type": "drop",
-          "include": "Target == 192.168.62.1:30009"
-        }
-      ]
+      "serviceUri": "http://192.168.62.1:30009"
     }
   ],
   "schemaVersion": "2016-08-11"

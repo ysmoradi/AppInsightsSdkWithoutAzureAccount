@@ -29,7 +29,9 @@ namespace AppInsightsSdkWithoutAzureAccount
                 loggingBuilder.ClearProviders();
                 // You can clear other providers to reduce pressure.
                 // You can configure eventFlowConfig.json to submit your logs to multiple outputs such as Elastic.
+
                 loggingBuilder.AddApplicationInsights();
+                // to make app insights able to capture MS.Ext.Logging logs from 3rd party libraries for example.
             })
             .ConfigureWebHostDefaults(webBuilder =>
             {

@@ -47,6 +47,7 @@ namespace AppInsightsSdkWithoutAzureAccount
                     using (IOperationHolder<DependencyTelemetry> exportExcelOperation = telemetryClient.StartOperation<DependencyTelemetry>("ExportToExcel"))
                     {
                         exportExcelOperation.Telemetry.Type = "Background";
+                        exportExcelOperation.Telemetry.Target = "ApplicationServer";
 
                         try
                         {
